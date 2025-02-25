@@ -308,7 +308,9 @@ body {
   margin-top: 10px; /* Add some margin above the buttons */
 }
 
-
+.timer-card .button-group button {
+  /* Existing button styles */
+}
 
 .timer-card .button-group .MuiIconButton-root {
   padding: 0; /* Remove default padding */
