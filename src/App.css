@@ -1,0 +1,328 @@
+/* Reset all margins and paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Ensure the root element takes full width */
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Basic styling for the body */
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Container styling */
+.container {
+  width: 100vw; /* Full width */
+  min-height: 100vh; /* Full height */
+  background-color: #F4F4F4; /* Light Gray */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Form styling */
+.timer-form {
+  display: flex; /* Use flex layout */
+  flex-direction: column; /* Stack elements vertically */
+  gap: 10px; /* Space between elements */
+  margin-bottom: 20px; /* Space below the form */
+  width: 100%; /* Full width */
+  max-width: 400px; /* Limit width for better alignment */
+}
+
+.timer-form .MuiTextField-root {
+  width: 100%; /* Full width for text fields */
+}
+
+.timer-form .MuiButton-root {
+  align-self: center; /* Center the button */
+  background-color: #2C3E50; /* Dark Blue */
+  color: #FFFFFF; /* White text */
+}
+
+.timer-form .MuiButton-root:hover {
+  background-color: #34495E; /* Slightly darker on hover */
+}
+
+/* Timer grid styling */
+.timers-grid {
+  display: flex;
+  flex-direction: column; /* Stack timers vertically */
+  gap: 15px; /* Space between timers */
+}
+
+/* Timer card styling */
+.timer-card {
+  background-color: #FFFFFF; /* White background for cards */
+  border: 1px solid #BDC3C7; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding inside the card */
+  width: 300px; /* Set a default width */
+  height: 250px; /* Increase height to accommodate buttons */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+  cursor: grab;
+  user-select: none;
+  position: relative; /* Ensure the resizer is positioned relative to the card */
+  overflow: visible; /* Ensure content isn't cut off */
+  animation: float 3s ease-in-out infinite; /* Apply floating animation */
+}
+
+.timer-card h6 {
+  color: #34495E; /* Slate Gray for text */
+}
+
+/* Button group styling */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* Add more space above the buttons */
+  position: relative;
+  z-index: 10; /* Ensure buttons are on top */
+}
+
+/* Button styling */
+.button-group button {
+  background-color: #16A085 !important; /* Teal for buttons - using !important to override MUI styles */
+  color: #FFFFFF !important; /* White text - using !important to override MUI styles */
+  border: none !important; /* Remove default border */
+  padding: 8px 16px !important; /* Add padding for better click area */
+  border-radius: 4px !important; /* Rounded corners for buttons */
+  margin: 0 5px !important; /* Add margin between buttons */
+  cursor: pointer !important; /* Change cursor to pointer */
+  text-transform: none !important; /* Prevent uppercase transformation */
+}
+
+.button-group button:hover {
+  background-color: #1ABC9C !important; /* Slightly darker on hover */
+}
+
+/* For the Delete button */
+.button-group button[color="secondary"] {
+  background-color: #E74C3C !important; /* Red for delete button */
+}
+
+.button-group button[color="secondary"]:hover {
+  background-color: #C0392B !important; /* Darker red on hover */
+}
+
+/* Resizer styling */
+.resizer {
+  width: 10px;
+  height: 10px;
+  background: #E67E22; /* Orange for the resizer */
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  cursor: nwse-resize; /* Change cursor to indicate resizing */
+}
+
+/* Typography */
+h1 {
+  margin-bottom: 20px;
+  color: #2C3E50;
+}
+
+.timer-card h3 {
+  margin: 0 0 10px 0;
+  color: #2C3E50;
+}
+
+.timer-card p {
+  margin: 0;
+  color: #6C757D;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw; /* Use viewport width unit */
+}
+
+/* Shake animation - more subtle version */
+@keyframes shake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-3px, -2px) rotate(-0.5deg); }
+  50% { transform: translate(3px, 2px) rotate(0.5deg); }
+  75% { transform: translate(-3px, 1px) rotate(-0.5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.shake {
+  animation: shake 0.5s infinite;
+  animation-timing-function: ease-in-out;
+  /* Removed the red border and glow */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important; /* Slightly enhanced shadow instead */
+}
+
+/* TextField styling */
+.timer-form input {
+  padding: 8px;
+  border: 1px solid #A0A0A0;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.8);
+  transition: border 0.3s;
+}
+
+.timer-form input:focus {
+  border: 1px solid #3498DB;
+  outline: none;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Darker semi-transparent background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 400px; /* Set a fixed width for the modal */
+}
+
+.modal-title {
+  font-size: 1.5em; /* Larger title font */
+  margin-bottom: 10px; /* Space below title */
+  color: #2C3E50; /* Dark Slate Gray */
+}
+
+.modal-message {
+  margin-bottom: 20px; /* Space below message */
+  color: #333; /* Darker text color */
+}
+
+.modal-button {
+  background-color: #3498DB; /* Light Blue */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-button:hover {
+  background-color: #2bc0ee; /* Darker Blue on hover */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* Start slightly lower */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* End at original position */
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in; /* Apply fade-in animation */
+}
+
+.timer-display {
+  display: flex;
+  justify-content: space-around; /* Space out the timer boxes */
+  margin: 20px 0; /* Add some margin */
+}
+
+.time-box {
+  text-align: center; /* Center the text */
+  padding: 10px; /* Add padding */
+  border: 2px solid #BDC3C7; /* Light Gray border */
+  border-radius: 8px; /* Rounded corners */
+  background-color: rgba(255, 255, 255, 0.9); /* Soft white background */
+}
+
+.timer-card .button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px; /* Add some margin above the buttons */
+}
+
+
+
+.timer-card .button-group .MuiIconButton-root {
+  padding: 0; /* Remove default padding */
+}
+
+/* Floating effect */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px); /* Move up slightly more */
+  }
+  100% {
+    transform: translateY(0); /* Return to original position */
+  }
+}
