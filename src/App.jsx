@@ -20,7 +20,16 @@ function App() {
 
   const addTimer = (e) => {
     e.preventDefault()
-    const totalMinutes = (parseInt(hours) || 0) * 60 + (parseInt(minutes) || 0)
+    
+    // Convert to numbers and ensure they're not negative
+    const hoursValue = Math.max(0, Number(hours))
+    const minutesValue = Math.max(0, Number(minutes))
+    
+    // Update state with validated values
+    setHours(hoursValue)
+    setMinutes(minutesValue)
+    
+    const totalMinutes = hoursValue * 60 + minutesValue
 
     // Error handling: Prevent creating a timer without hours or minutes
     if (totalMinutes <= 0) {
@@ -231,21 +240,63 @@ function App() {
       >
         <TextField
           type="number"
-          value={hours}
-          onChange={(e) => setHours(e.target.value)}
+          value={Math.max(0, hours)}
+          onChange={(e) => {
+            const value = Math.max(0, Math.floor(Number(e.target.value)))
+            setHours(value)
+          }}
           label="Hours"
           variant="outlined"
           size="small"
+          inputProps={{ min: 0, step: 1 }}
+          onKeyDown={(e) => {
+            if (e.key === '-' || e.key === 'Subtract') {
+              e.preventDefault()
+            }
+          }}
         />
         <TextField
           type="number"
-          value={minutes}
-          onChange={(e) => setMinutes(e.target.value)}
+          value={Math.max(0, minutes)}
+          onChange={(e) => {
+            const value = Math.max(0, Math.floor(Number(e.target.value)))
+            setMinutes(value)
+          }}
           label="Minutes"
           variant="outlined"
           size="small"
+          inputProps={{ min: 0, step: 1 }}
+          onKeyDown={(e) => {
+            if (e.key === '-' || e.key === 'Subtract') {
+              e.preventDefault()
+            }
+          }}
         />
-        <Button type="submit" variant="contained" color="primary">Add Timer</Button>
+        <Button 
+          type="submit" 
+          variant="contained" 
+          style={{
+            backgroundColor: '#c8a2ff', // Soft lilac color from your gradient
+            color: '#2C3E50', // Dark text for contrast
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            padding: '8px 16px',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+            border: '1px solid #e6c6ff', // Light border
+            transition: 'all 0.3s ease',
+            textTransform: 'none', // Prevents all-caps
+            marginTop: '10px'
+          }}
+          sx={{
+            '&:hover': {
+              backgroundColor: '#d8b4fe', // Lighter shade when hovering
+              transform: 'translateY(-2px)',
+              boxShadow: '0 6px 12px rgba(0,0,0,0.3)',
+            }
+          }}
+        >
+          Add Timer
+        </Button>
       </form>
 
       <div className="timers-grid">
@@ -257,9 +308,13 @@ function App() {
               id={`timer-${timer.id}`}
               className={`timer-card ${timer.isShaking ? 'shake' : ''} ${timer.fadeIn ? 'fade-in' : ''}`}
               onMouseDown={(e) => handleMouseDown(timer, e)}
-              style={timerCardStyle(timer)}
+              style={{
+                ...timerCardStyle(timer),
+                backgroundColor: '#F5F5DC', // Matching the form's background color
+              }}
+              sx={{ bgcolor: '#F5F5DC' }} // Using Material-UI's sx prop
             >
-              <CardContent style={{ position: 'relative' }}>
+              <CardContent style={{ position: 'relative', backgroundColor: '#F5F5DC' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   {timer.isEditing ? (
                     <input
