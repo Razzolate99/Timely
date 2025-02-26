@@ -27,11 +27,32 @@ body {
 .container {
   width: 100vw; /* Full width */
   min-height: 100vh; /* Full height */
-  background-color: #F4F4F4; /* Light Gray */
+  background: linear-gradient(
+    135deg,
+    #f3e7ff 0%,        /* Soft lavender */
+    #f8d7ff 25%,       /* Pale pink */
+    #e6c6ff 50%,       /* Light purple */
+    #d8b4fe 75%,       /* Muted violet */
+    #c8a2ff 100%       /* Soft lilac */
+  );
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Form styling */
@@ -86,49 +107,21 @@ body {
 }
 
 /* Button group styling */
-.button-group {
+.timer-card .button-group {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px; /* Add more space above the buttons */
-  position: relative;
-  z-index: 10; /* Ensure buttons are on top */
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+  padding: 0 20px;
 }
 
 /* Button styling */
-.button-group button {
-  background-color: #16A085 !important; /* Teal for buttons - using !important to override MUI styles */
-  color: #FFFFFF !important; /* White text - using !important to override MUI styles */
-  border: none !important; /* Remove default border */
-  padding: 8px 16px !important; /* Add padding for better click area */
-  border-radius: 4px !important; /* Rounded corners for buttons */
-  margin: 0 5px !important; /* Add margin between buttons */
-  cursor: pointer !important; /* Change cursor to pointer */
-  text-transform: none !important; /* Prevent uppercase transformation */
-}
-
-.button-group button:hover {
-  background-color: #1ABC9C !important; /* Slightly darker on hover */
+.timer-card .button-group button {
+  margin: 0 auto;
 }
 
 /* For the Delete button */
-.button-group button[color="secondary"] {
-  background-color: #E74C3C !important; /* Red for delete button */
-}
 
-.button-group button[color="secondary"]:hover {
-  background-color: #C0392B !important; /* Darker red on hover */
-}
-
-/* Resizer styling */
-.resizer {
-  width: 10px;
-  height: 10px;
-  background: #E67E22; /* Orange for the resizer */
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  cursor: nwse-resize; /* Change cursor to indicate resizing */
-}
 
 /* Typography */
 h1 {
@@ -300,16 +293,6 @@ body {
   border: 2px solid #BDC3C7; /* Light Gray border */
   border-radius: 8px; /* Rounded corners */
   background-color: rgba(255, 255, 255, 0.9); /* Soft white background */
-}
-
-.timer-card .button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px; /* Add some margin above the buttons */
-}
-
-.timer-card .button-group button {
-  /* Existing button styles */
 }
 
 .timer-card .button-group .MuiIconButton-root {

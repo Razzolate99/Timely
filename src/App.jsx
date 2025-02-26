@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { TextField, Button, Card, CardContent, Typography, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import CloseIcon from '@mui/icons-material/Close'
@@ -11,6 +11,12 @@ function App() {
   const [draggingTimer, setDraggingTimer] = useState(null)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
   const [openErrorModal, setOpenErrorModal] = useState(false)
+  const [formPosition, setFormPosition] = useState({ 
+    x: window.innerWidth / 2.2 - 130, // Center horizontally (assuming form width ~300px)
+    y: 100 // Position just below the title
+  })
+  const [draggingForm, setDraggingForm] = useState(false)
+  const [formOffset, setFormOffset] = useState({ x: 0, y: 0 })
 
   const addTimer = (e) => {
     e.preventDefault()
@@ -113,26 +119,44 @@ function App() {
     })
   }
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
+    if (draggingForm) {
+      setFormPosition({
+        x: e.clientX - formOffset.x,
+        y: e.clientY - formOffset.y
+      })
+      return
+    }
     if (!draggingTimer) return
 
-    const updatedTimers = timers.map(timer => {
-      if (timer.id === draggingTimer.id) {
-        return {
-          ...timer,
-          position: {
-            x: e.clientX - offset.x,
-            y: e.clientY - offset.y
+    // Use transform instead of left/top for better performance
+    const updatedPosition = {
+      x: e.clientX - offset.x,
+      y: e.clientY - offset.y
+    }
+
+    // Update the dragging timer's position directly in the DOM
+    const timerElement = document.getElementById(`timer-${draggingTimer.id}`)
+    if (timerElement) {
+      timerElement.style.transform = `translate(${updatedPosition.x}px, ${updatedPosition.y}px)`
+    }
+
+    // Debounce the state update to prevent excessive re-renders
+    requestAnimationFrame(() => {
+      setTimers(prevTimers => prevTimers.map(timer => {
+        if (timer.id === draggingTimer.id) {
+          return {
+            ...timer,
+            position: updatedPosition
           }
         }
-      }
-      return timer
+        return timer
+      }))
     })
-
-    setTimers(updatedTimers)
-  }
+  }, [draggingTimer, draggingForm, offset, formOffset])
 
   const handleMouseUp = () => {
+    setDraggingForm(false)
     setDraggingTimer(null)
   }
 
@@ -144,7 +168,7 @@ function App() {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)
     }
-  }, [draggingTimer, offset])
+  }, [draggingTimer, draggingForm, offset, formOffset])
 
   const handleRename = (id, newName) => {
     setTimers(timers.map(timer => timer.id === id ? { ...timer, description: newName, isEditing: false } : timer))
@@ -164,11 +188,47 @@ function App() {
     setTimers(timers.filter(timer => timer.id !== id))
   }
 
+  const handleFormMouseDown = (e) => {
+    setDraggingForm(true)
+    setFormOffset({
+      x: e.clientX - formPosition.x,
+      y: e.clientY - formPosition.y
+    })
+  }
+
+  // Add CSS will-change property for better performance
+  const timerCardStyle = (timer) => ({
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    transform: `translate(${timer.position.x}px, ${timer.position.y}px)`,
+    willChange: 'transform',
+    transition: draggingTimer?.id === timer.id ? 'none' : 'transform 0.2s ease',
+    pointerEvents: 'auto' // Always allow pointer events
+  })
+
   return (
     <div className="container">
       <h1>Timely</h1>
       
-      <form onSubmit={addTimer} className="timer-form">
+      <form 
+        onSubmit={addTimer} 
+        className="timer-form" 
+        style={{ 
+          border: '1px solid white', 
+          borderRadius: '4px', 
+          padding: '16px',
+          position: 'absolute',
+          left: formPosition.x,
+          top: formPosition.y,
+          cursor: 'move',
+          transition: 'transform 0.2s ease',
+          backgroundColor: '#F5F5DC', // Retro yellowish background
+          boxShadow: '2px 2px 5px rgba(0,0,0,0.2)', // Add subtle shadow for depth
+          border: '1px solid #e0c49a' // Warm border color
+        }}
+        onMouseDown={handleFormMouseDown}
+      >
         <TextField
           type="number"
           value={hours}
@@ -194,14 +254,10 @@ function App() {
           return (
             <Card
               key={timer.id}
+              id={`timer-${timer.id}`}
               className={`timer-card ${timer.isShaking ? 'shake' : ''} ${timer.fadeIn ? 'fade-in' : ''}`}
               onMouseDown={(e) => handleMouseDown(timer, e)}
-              style={{
-                position: 'absolute',
-                left: timer.position.x,
-                top: timer.position.y,
-                transition: 'transform 0.2s ease'
-              }}
+              style={timerCardStyle(timer)}
             >
               <CardContent style={{ position: 'relative' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
